@@ -17,9 +17,24 @@ def filter_the_module(root, filepath):
 
 
 def parse(source):
+    # index = clang.cindex.Index.create()
+    # base_flags = [
+    #     '-x',
+    #     'c++',
+    # ]
+    # return index.parse(source)
     index = clang.cindex.Index.create()
+    # unit = index.parse(source, unsaved_files=unsaved_files)
+    base_flags = [
+        '-x',
+        'c++',
+    ]
+    unit = index.parse(source, args=base_flags)
 
-    return index.parse(source, args=['-X','c++'])
+    # for diag in unit.diagnostics:
+    #     print(diag, file=sys.stderr)
+
+    return unit
 
 
 def get_operator(node):
@@ -42,34 +57,45 @@ def get_operator(node):
 
 def codegen(node, out_put, is_skip, base_indent=4, indent=0):
     k = node.kind  # type: clang.cindex.CursorKind
-    print(k)
-    return
 
     prt_format = '{indent}{kind}{name}{type_name}'
     if node.spelling:
-        name = ' s: %s' % node.spelling
+        name = ', name: %s' % node.spelling
     else:
-        name = ''
+        name = ', name:null'
     if node.type and node.type.spelling:
-        type_name = ', t: %s' % node.type.spelling
+        type_name = ', type: %s' % node.type.spelling
     else:
-        type_name = ''
+        type_name = ', type:null'
 
     if k == CursorKind.CXX_METHOD and node.spelling in ['aggregate', 'update', 'generate']:
         is_skip = False
-        print('expr ' + node.spelling + '(expr x, expr y){\n')
+        # out_put.write('expr ' + node.spelling + '(expr x, expr y){\n')
 
-    # if k == CursorKind.CXX_METHOD and node.spelling in ['aggregate']:
-    #     is_skip = False
+    # template = """
+    # expr aggFunc(expr {PRARM1}, expr {PARAM2}) {
+    #     return {STATEMENT};
+    # }
+    # """
     #
+    # code = template.format(PARAM1="x", PARAM2="y", STATEMENT="x+y")
+    # print(code)
+
+
     if not is_skip:
         # out_put.write('expr ' + node.spelling + '(expr x, expr y){\n')
 
-        # if k in [CursorKind.BINARY_OPERATOR,
-        #          CursorKind.UNARY_OPERATOR,
-        #          CursorKind.COMPOUND_ASSIGNMENT_OPERATOR]:
-        #     print((' ' * indent) + 'operator: ', get_operator(node))
-        # print(prt_format.format(indent=' ' * indent, kind=k.name, name=name, type_name=type_name))
+        if k==CursorKind.CXX_METHOD:
+            out_put.write('expr ' + node.spelling + '(')
+
+        if k==CursorKind.PARM_DECL:
+            out_put.write('expr ' + k.name)
+
+        print(prt_format.format(indent=' ' * indent, kind=k.name, name=name, type_name=type_name))
+        if k in [CursorKind.BINARY_OPERATOR,
+                 CursorKind.UNARY_OPERATOR,
+                 CursorKind.COMPOUND_ASSIGNMENT_OPERATOR]:
+            print((' ' * indent) + 'operator: ', get_operator(node))
 
         if k == CursorKind.OVERLOADED_DECL_REF and node.spelling == 'atomic_min':
             # out_put.write('\treturn ite(x < y, x, y);\n')
@@ -93,8 +119,6 @@ if __name__ == '__main__':
     unit = parse(filepath)
 
     modules = filter_the_module(unit.cursor, filepath)
-    print(modules.__sizeof__())
-    to_reflect, to_include = [], []
     # head information
     out_file = open('./demo_parsed.h', 'w')
     out_file.write('#include \"z3++.h\"\n\n')
