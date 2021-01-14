@@ -1,0 +1,55 @@
+    CXX_METHOD, name: aggregate, type: bool (SSSPIngress::value_t &, SSSPIngress::value_t)
+        CXX_OVERRIDE_ATTR, name:null, type:null
+        PARM_DECL, name: a, type: SSSPIngress::value_t &
+            TYPE_REF, name: SSSPIngress::value_t, type: SSSPIngress::value_t
+        PARM_DECL, name: b, type: SSSPIngress::value_t
+            TYPE_REF, name: SSSPIngress::value_t, type: SSSPIngress::value_t
+        COMPOUND_STMT, name:null, type:null
+            DECL_STMT, name:null, type:null
+                VAR_DECL, name: tmp, type: SSSPIngress::value_t
+                    TYPE_REF, name: SSSPIngress::value_t, type: SSSPIngress::value_t
+                    UNARY_OPERATOR, name:null, type: <dependent type>
+                    operator:  &
+                        DECL_REF_EXPR, name: a, type: SSSPIngress::value_t
+            RETURN_STMT, name:null, type:null
+                BINARY_OPERATOR, name:null, type: <dependent type>
+                operator:  +
+                    CALL_EXPR, name:null, type: <dependent type>
+                        DECL_REF_EXPR, name:null, type: <overloaded function type>
+                            OVERLOADED_DECL_REF, name: atomic_min, type:null
+	return ite(x < y, x, y);
+
+                        DECL_REF_EXPR, name: a, type: SSSPIngress::value_t
+                        DECL_REF_EXPR, name: b, type: SSSPIngress::value_t
+                    INTEGER_LITERAL, name:null, type: int
+    CXX_METHOD, name: update, type: bool (SSSPIngress::value_t &, SSSPIngress::value_t)
+        CXX_OVERRIDE_ATTR, name:null, type:null
+        PARM_DECL, name: a, type: SSSPIngress::value_t &
+            TYPE_REF, name: SSSPIngress::value_t, type: SSSPIngress::value_t
+        PARM_DECL, name: b, type: SSSPIngress::value_t
+            TYPE_REF, name: SSSPIngress::value_t, type: SSSPIngress::value_t
+        COMPOUND_STMT, name:null, type:null
+            RETURN_STMT, name:null, type:null
+                CALL_EXPR, name:null, type: <dependent type>
+                    DECL_REF_EXPR, name:null, type: <overloaded function type>
+                        OVERLOADED_DECL_REF, name: atomic_min, type:null
+	return ite(x < y, x, y);
+
+                    DECL_REF_EXPR, name: a, type: SSSPIngress::value_t
+                    DECL_REF_EXPR, name: b, type: SSSPIngress::value_t
+    CXX_METHOD, name: generate, type: double (double, double, double)
+        PARM_DECL, name: v, type: double
+        PARM_DECL, name: m, type: double
+        PARM_DECL, name: w, type: double
+        COMPOUND_STMT, name:null, type:null
+            DECL_STMT, name:null, type:null
+                VAR_DECL, name: tmp, type: double
+                    BINARY_OPERATOR, name:null, type: double
+                    operator:  +
+                        UNEXPOSED_EXPR, name: v, type: double
+                            DECL_REF_EXPR, name: v, type: double
+                        UNEXPOSED_EXPR, name: w, type: double
+                            DECL_REF_EXPR, name: w, type: double
+            RETURN_STMT, name:null, type:null
+                UNEXPOSED_EXPR, name: tmp, type: double
+                    DECL_REF_EXPR, name: tmp, type: double
