@@ -1,0 +1,6 @@
+(define-fun g ( (a Real) (b Real) ) Real (ite (< a b) a b) )
+(declare-fun g1 (Real) Real )
+(assert (forall ( (x1 Real) (x2 Real) (x3 Real))
+(=  (g x1 (g (g (g1 x2) x2) x3))  (g x1 x3) )))
+(check-sat)
+(get-model)
